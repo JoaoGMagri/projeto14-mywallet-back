@@ -10,11 +10,11 @@ import {
     postSingUp,
     postSingIn,
     deleteGoOut,
-    getSingUp,
 } from "./controllers/users.controller.js"
 
 import {
     postTransfers,
+    getTransfers,
 } from "./controllers/records.controller.js"
 
 
@@ -60,13 +60,12 @@ app.post("/sing-up", postSingUp);
 
 app.post("/sing-in", postSingIn);
 
-app.delete("/go-out", deleteGoOut);
+app.delete( "/go-out", deleteGoOut );
 
-app.post("/transfers", postTransfers);
+app.post( "/transfers", postTransfers );
 
+app.get( "/transfers", getTransfers )
 
-/* teste para ver usuariros  APAGAR DEPOIS*/
-app.get("/sing-up", getSingUp);
 
 app.listen(5000, () => {
     console.log("Server running in port: 5000")

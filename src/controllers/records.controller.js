@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 
 import {
     collectionRecords,
+    collectionUsers,
     collectionSessions,
     validateRecords
 } from "../index.js";
@@ -38,4 +39,25 @@ export async function postTransfers(req, res) {
         res.status(500).send(error);
     }
 
+}
+
+export async function getTransfers(req, res) {
+    const { authorization } = req.headers;
+    const token = authorization?.replace('Bearer ', '');
+
+    try {
+        const userExists = await collectionSessions.findOne({ token: token });
+        const user = userExists.userId;
+        const userObj = await collectionUsers.findOne({ _id: user });
+        const info = await collectionRecords.find({ userId: user }).toArray();
+
+        const obj = {
+            user: userObj.name,
+            info,
+        }
+
+        res.status(200).send(obj);
+    } catch (error) {
+        res.status(500).send({ message: "Erro com o servidor" });
+    }
 }

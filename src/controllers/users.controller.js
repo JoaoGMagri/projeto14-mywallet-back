@@ -92,19 +92,3 @@ export async function deleteGoOut(req, res) {
 
 
 }
-
-
-//Para testes APAGAR DEPOIS.
-export async function getSingUp(req, res) {
-
-    try {
-        const nameUsers = await collectionUsers.find().toArray();
-
-        res.send(nameUsers)
-
-    } catch (error) {
-        console.log(error);
-        res.sendStatus(500);
-    }
-
-}
