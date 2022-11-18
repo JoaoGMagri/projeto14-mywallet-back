@@ -9,6 +9,7 @@ import dotenv from 'dotenv';
 import {
     postSingUp,
     postSingIn,
+    deleteGoOut,
     getSingUp,
 } from "./controllers/users.controller.js"
 
@@ -38,9 +39,11 @@ export const validateUsers = joi.object({
         .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
 });
 
-app.post("/sing-up", postSingUp);
+app.post( "/sing-up", postSingUp );
 
-app.post( "/sing-in", postSingIn);
+app.post( "/sing-in", postSingIn );
+
+app.delete( "/go-out", deleteGoOut );
 
 
 
