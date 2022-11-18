@@ -13,6 +13,11 @@ import {
     getSingUp,
 } from "./controllers/users.controller.js"
 
+import {
+    postTransfers,
+} from "./controllers/records.controller.js"
+
+
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -38,13 +43,26 @@ export const validateUsers = joi.object({
     email: joi.string()
         .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
 });
+export const validateRecords = joi.object({
+    type: joi.string()
+        .required(),
 
-app.post( "/sing-up", postSingUp );
+    value: joi.string()
+        .required(),
 
-app.post( "/sing-in", postSingIn );
+    description: joi.string()
+        .min(3)
+        .max(30)
+        .required(),
+});
 
-app.delete( "/go-out", deleteGoOut );
+app.post("/sing-up", postSingUp);
 
+app.post("/sing-in", postSingIn);
+
+app.delete("/go-out", deleteGoOut);
+
+app.post("/transfers", postTransfers);
 
 
 /* teste para ver usuariros  APAGAR DEPOIS*/
