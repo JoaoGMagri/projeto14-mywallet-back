@@ -1,11 +1,9 @@
+// import de bibliotecas
 import dayjs from "dayjs";
 
-import {
-    collectionRecords,
-    collectionUsers,
-    collectionSessions,
-    validateRecords
-} from "../index.js";
+//Import de arquivos
+import { validateRecords } from "../index.js";
+import { collectionRecords, collectionUsers, collectionSessions } from "../database/database.js";
 
 export async function postTransfers(req, res) {
 
@@ -47,7 +45,7 @@ export async function getTransfers(req, res) {
 
     try {
         const userExists = await collectionSessions.findOne({ token: token });
-        const user = userExists.userId;
+        const user = userExists.userId; 
         const userObj = await collectionUsers.findOne({ _id: user });
         const info = await collectionRecords.find({ userId: user }).toArray();
 
