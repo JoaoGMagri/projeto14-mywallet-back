@@ -1,3 +1,5 @@
+import { collectionUsers, collectionSessions } from "../database/database.js";
+
 export async function postSingUp(req, res) {
 
     const objSingUP = req.objSingUP;

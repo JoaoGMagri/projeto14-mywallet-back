@@ -1,37 +1,13 @@
-// import de bibliotecas
-import dayjs from "dayjs";
-
 //Import de arquivos
-import { validateRecords } from "../index.js";
-import { collectionRecords, collectionUsers, collectionSessions } from "../database/database.js";
+import { collectionRecords } from "../database/database.js";
 
 export async function postTransfers(req, res) {
 
-    const ObjNewTransfer = req.body;
-    const { type, value, description } = req.body;
-    const { authorization } = req.headers;
-    const token = authorization?.replace('Bearer ', '');
-
-    const { error } = validateRecords.validate(ObjNewTransfer, { abortEarly: false });
-    if (error) {
-        const erros = error.details.map((detail) => detail.message);
-        res.status(409).send(erros);
-        return;
-    }
+    const objPost = req.objPost
 
     try {
-        const userExists = await collectionSessions.findOne({ token: token });
-
-        await collectionRecords.insertOne({
-            type,
-            value,
-            description,
-            userId: userExists.userId,
-            data: dayjs().format("DD/MM")
-        });
-
+        await collectionRecords.insertOne(objPost);
         res.send("ok")
-
     } catch (error) {
         console.log(error);
         res.status(500).send(error);
@@ -40,21 +16,10 @@ export async function postTransfers(req, res) {
 }
 
 export async function getTransfers(req, res) {
-    const { authorization } = req.headers;
-    const token = authorization?.replace('Bearer ', '');
-
+    
+    const objResp = req.objResp;
     try {
-        const userExists = await collectionSessions.findOne({ token: token });
-        const user = userExists.userId; 
-        const userObj = await collectionUsers.findOne({ _id: user });
-        const info = await collectionRecords.find({ userId: user }).toArray();
-
-        const obj = {
-            user: userObj.name,
-            info,
-        }
-
-        res.status(200).send(obj);
+        res.status(200).send(objResp);
     } catch (error) {
         res.status(500).send({ message: "Erro com o servidor" });
     }
